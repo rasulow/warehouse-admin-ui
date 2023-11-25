@@ -45,12 +45,21 @@ export default {
                   }
               })
               .then((res) => {
-                  localStorage.setItem('token', res.data.access_token)
-                  this.Toast.fire({
-                      icon: 'success',
-                      title: 'Signed in successfully'
-                  })
-                  this.$router.push('/dashboard')
+                  if (res.data.role === 'admin') {
+                      localStorage.setItem('token', res.data.access_token)
+                      this.Toast.fire({
+                          icon: 'success',
+                          title: 'Signed in successfully'
+                      })
+                      this.$router.push('/dashboard')
+                  } else {
+                      this.username = ''
+                      this.password = ''
+                      this.Toast.fire({
+                          icon: 'error',
+                          title: 'You aren\'t admin'
+                      })
+                  }
               })
               .catch((err) => {
                   console.log(err)
