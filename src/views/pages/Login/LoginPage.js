@@ -61,7 +61,6 @@ export default {
                       title: 'Something went wrong!'
                   })
               })
-
       }
     }
   }
