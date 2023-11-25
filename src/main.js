@@ -10,8 +10,10 @@ import axios from 'axios'
 
 Vue.config.productionTip = false
 
-axios.defaults.baseURL = 'http://10.10.73.45:5050'
+axios.defaults.baseURL = 'http://216.250.9.84:5050'
 
+const token = 'Bearer ' + localStorage.getItem('token')
+axios.defaults.headers['Authorization'] = token
 
 
 new Vue({

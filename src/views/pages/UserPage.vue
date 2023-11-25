@@ -103,6 +103,14 @@
                         label="password"
                         v-model="user.password"
                     />
+                    <v-combobox
+                        dense
+                        outlined
+                        label="role"
+                        v-model="user.role"
+                        :items="roles"
+                        clearable
+                    />
                     <v-text-field
                         outlined
                         hide-details
@@ -128,6 +136,7 @@ import NavButton from '@/components/example/NavButton.vue';
 export default {
     data: () => ({
         headers: ['id', 'department', 'position', 'username', 'staff_id', 'is_deleted', 'action'],
+        roles: ['admin', 'user'],
         users: [],
         user: {},
         dialog: false,
@@ -201,13 +210,13 @@ export default {
         },
 
         async postData() {
-            await axios.post('/user/', {
+            await axios.post('/auth/', {
                 username: this.user.username,
                 password: this.user.password,
-                role: 'user',
+                role: this.user.role,
                 staff_id: this.user.staff_id,
-                department_id: 3,
-                position_id: 7
+                department_id: this.user.department.id,
+                position_id: this.user.position.id
             })
             .then(() => {
                 this.Toast.fire({

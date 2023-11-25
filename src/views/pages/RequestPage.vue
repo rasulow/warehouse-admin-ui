@@ -46,13 +46,13 @@
                             <tr
                                 v-for="(item, i) in requests"
                                 :key="i"
-                                :style="i % 2 == 0 ? 'background-color: #F2F2F7': ''"
+                                :style="i % 2 === 0 ? 'background-color: #F2F2F7': ''"
                                 text-decoration="line-through"
                                 class="table-row"
                             >
                                 <td @click="openDialog(item)">{{ item.id }}</td>
-                                <td @click="openDialog(item)">{{ item.item.title }}</td>
-                                <td @click="openDialog(item)">{{ item.item.quantity }}</td>
+                                <td @click="openDialog(item)">{{ item.item?.title }}</td>
+                                <td @click="openDialog(item)">{{ item.item?.quantity }}</td>
                                 <td @click="openDialog(item)">{{ item.req_quantity }}</td>
                                 <td @click="openDialog(item)">{{ item.req_date }}</td>
                                 <td>
@@ -60,7 +60,7 @@
                                         <div
                                             style="color: white;"
                                             :class="
-                                            item.response?.status == 2 ? 'completed' 
+                                            item.response?.status === 2 ? 'completed'
                                             : item.response?.status == 1 ? 'answered'
                                             : item.response?.status == 0 ? 'rejected' : 'waiting'"
                                             @click="openDialog(item)"
@@ -292,6 +292,7 @@ export default {
             await axios.get('/request/', { params: params })
             .then((res) => {
                 this.requests = res.data.data
+                console.log(this.requests)
             })
             .catch((err) => {
                 console.log(err)

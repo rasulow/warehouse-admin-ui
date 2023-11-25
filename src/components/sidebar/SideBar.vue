@@ -10,6 +10,7 @@ export default {
             { icon: 'mdi-alpha-u-box-outline', text: 'User', to: '/user' },
             { icon: 'mdi-alpha-i-box-outline', text: 'Item', to: '/item' },
             { icon: 'mdi-alpha-r-box-outline', text: 'Requests', to: '/requests' },
+            { icon: 'mdi-logout', text: 'Logout', to: '/login' },
         ]
 
     }),

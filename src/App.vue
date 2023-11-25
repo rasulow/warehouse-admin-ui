@@ -13,6 +13,7 @@
 <script>
 // import is_have from './utils/haveToken';
 import SideBar from "@/components/sidebar/SideBar.vue";
+import is_have from "@/utils/haveToken";
 
 export default {
   name: 'App',
@@ -20,18 +21,18 @@ export default {
   data: () => ({
   }),
   created() {
-    // this.checkUser()
+    this.checkUser()
   },
   mounted() {
   },  
   beforeDestroy() {
   }, 
   methods: {
-    // async checkUser() {
-    //   if (!is_have()) {
-    //       this.$router.push('/login');
-    //   }
-    // }
+    async checkUser() {
+      if (!is_have()) {
+          await this.$router.push('/login');
+      }
+    }
   },
   watch: {
   },

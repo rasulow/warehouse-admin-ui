@@ -29,7 +29,7 @@
                             <tr
                                 v-for="(item, i) in departments"
                                 :key="i"
-                                :style="i % 2 == 0 ? 'background-color: #F2F2F7': ''"
+                                :style="i % 2 === 0 ? 'background-color: #F2F2F7': ''"
                                 class="table-row"
 
                             >
@@ -84,7 +84,7 @@ import NavButton from '@/components/example/NavButton.vue';
 
 export default {
     data: () => ({
-        headers: ['ID', 'department'    , 'action'],
+        headers: ['ID', 'department', 'action'],
         departments: [],
         department: {},
         dialog: false,

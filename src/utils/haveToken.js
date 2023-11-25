@@ -1,9 +1,5 @@
 const is_have = ()=>{  
-    if(localStorage.getItem("token")){
-        return true;
-    }else{
-        return false
-    }
+    return !!localStorage.getItem("token");
 }
 
 export default is_have;
