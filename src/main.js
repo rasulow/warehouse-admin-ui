@@ -4,13 +4,14 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import axios from 'axios'
+import BASE_URL from "@/utils/url";
 // import is_have from './utils/haveToken'
 
 
 
 Vue.config.productionTip = false
 
-axios.defaults.baseURL = 'http://216.250.9.84:5050'
+axios.defaults.baseURL = BASE_URL
 
 const token = 'Bearer ' + localStorage.getItem('token')
 axios.defaults.headers['Authorization'] = token

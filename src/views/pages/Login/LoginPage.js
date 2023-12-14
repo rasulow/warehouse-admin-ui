@@ -7,12 +7,12 @@ export default {
         password: '',
         username: '',
         usernameRules: [
-            v => !!v || 'Username is required',
-            v => v.length <= 10 || 'Username must be less than 10 characters',
+            v => !!v || 'Ulanyjy ady hökman!',
+            v => v.length <= 10 || 'Ulanyjy ady 10 simwoldan az bolmaly!',
         ],
         passwordRules: [
-          v => !!v || 'Password is required',
-          v => v.length <= 10 || 'Password must be less than 10 characters',
+          v => !!v || 'Açar sözi hökman!',
+          v => v.length <= 10 || 'Açar sözi 10 simwoldan az bolmaly!',
         ],
         Toast: Swal.mixin({
           toast: true,
@@ -49,7 +49,7 @@ export default {
                       localStorage.setItem('token', res.data.access_token)
                       this.Toast.fire({
                           icon: 'success',
-                          title: 'Signed in successfully'
+                          title: 'Üstünlikli ulgama girdiňiz!'
                       })
                       this.$router.push('/dashboard')
                   } else {
@@ -57,7 +57,7 @@ export default {
                       this.password = ''
                       this.Toast.fire({
                           icon: 'error',
-                          title: 'You aren\'t admin'
+                          title: 'Siziň ulanyjyňyzda administratiw hukugy ýok!'
                       })
                   }
               })
@@ -67,7 +67,7 @@ export default {
                   this.password = ''
                   this.Toast.fire({
                       icon: 'error',
-                      title: 'Something went wrong!'
+                      title: 'Ýalňyşlyk ýüze çykdy!'
                   })
               })
       }

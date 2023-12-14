@@ -1,5 +1,5 @@
 <template>
-    <v-app :style="{ background: $vuetify.theme.themes.dark.background }">
+    <v-app style="background-color: #F2F2F7;">
         <v-container>
             <v-row class="d-flex justify-center align-center" style="margin-top: 200px;">
                 <v-col cols="12" sm="12" class="d-flex justify-center align-center">
@@ -12,11 +12,11 @@
                     >
                         <v-col>
                             <v-row no-gutters justify="start">
-                                <v-card-title class="pa-0 mb-8 login-text">Log in</v-card-title>
+                                <v-card-title class="pa-0 mb-8 login-text">Ulgama girmek</v-card-title>
                             </v-row>
                             <v-row no-gutters justify="start">
                                 <v-text-field
-                                    label="Username"
+                                    label="Ulanyjy ady"
                                     v-model="username"
                                     outlined
                                     :rules="usernameRules"
@@ -27,7 +27,7 @@
                                     v-model="password"
                                     :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                                     :type="show1 ? 'text' : 'password'"
-                                    label="Password"
+                                    label="Açar sözi"
                                     @click:append="show1 = !show1"
                                     outlined
                                     tile
@@ -39,11 +39,11 @@
                                 width="100%"
                                 height="50"
                                 style="font-size: larger;font-weight: 200;color: white;"
-                                color="#FF141D"
+                                color="#0BB923"
                                 tile
                                 @click="login"
                             >
-                                Log in
+                                Ulgama girmek
                             </v-btn>
                         </v-col>
                     </v-card>

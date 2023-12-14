@@ -24,7 +24,18 @@ export default {
     this.checkUser()
   },
   mounted() {
-  },  
+    this.$axios.interceptors.response.use(
+        (response) => {
+          return response;
+        },
+        (error) => {
+          if (error.response && error.response.status === 401) {
+            window.location.reload();
+          }
+          return Promise.reject(error);
+        }
+    );
+  },
   beforeDestroy() {
   }, 
   methods: {

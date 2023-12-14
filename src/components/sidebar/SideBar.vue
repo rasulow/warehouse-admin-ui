@@ -4,13 +4,13 @@ export default {
         selectItem: null,
         drawer: null,
         items: [
-            { icon: 'mdi-view-dashboard-outline', text: 'Dashboard', to: '/dashboard' },
-            { icon: 'mdi-alpha-d-box-outline', text: 'Department', to: '/department' },
-            { icon: 'mdi-alpha-p-box-outline', text: 'Position', to: '/position' },
-            { icon: 'mdi-alpha-u-box-outline', text: 'User', to: '/user' },
-            { icon: 'mdi-alpha-i-box-outline', text: 'Item', to: '/item' },
-            { icon: 'mdi-alpha-r-box-outline', text: 'Requests', to: '/requests' },
-            { icon: 'mdi-logout', text: 'Logout', to: '/login' },
+            { icon: 'mdi-view-dashboard-outline', text: 'Statistika', to: '/dashboard' },
+            { icon: 'mdi-alpha-d-box-outline', text: 'Bölümi', to: '/department' },
+            { icon: 'mdi-alpha-p-box-outline', text: 'Wezipesi', to: '/position' },
+            { icon: 'mdi-alpha-u-box-outline', text: 'Ulanyjylar', to: '/user' },
+            { icon: 'mdi-alpha-i-box-outline', text: 'Harytlar', to: '/item' },
+            { icon: 'mdi-alpha-r-box-outline', text: 'Sargytlar', to: '/requests' },
+            { icon: 'mdi-logout', text: 'Ulgamdan çykmak', to: '/login' },
         ]
 
     }),
@@ -28,12 +28,13 @@ export default {
         >
           <v-img 
             src="@/assets/warehouse.png"
-            max-height="75"
-            max-width="75"
+            max-height="100"
+            max-width="100"
+            class="ml-1"
             />
           <div
-            style="font-weight: 700;font-size: large;"
-          >𝕨𝕒𝕣𝕖𝕙𝕠𝕦𝕤𝕖</div>
+            style="font-weight: 700;font-size: 35px;"
+          >ℍ𝔸ℤ𝕆</div>
         </v-row>
         <v-divider/>
         <v-list flat>
@@ -46,7 +47,6 @@ export default {
                     active-class="active-class"
                     style="height: 20px !important;
                     margin: 0px 15px;
-                    border-radius: 5px;
                     "
                 >
                     <v-list-item-icon style="height: 15px !important;">
@@ -104,6 +104,6 @@ export default {
 }
 
 .active-class {
-    background-color: #ff141d;
+    background-color: #0BB923;
 }
 </style>

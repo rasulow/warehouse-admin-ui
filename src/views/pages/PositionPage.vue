@@ -4,14 +4,15 @@
             <nav-button
                 icon="mdi-alpha-p-box-outline"
                 @open-dialog="dialog = !dialog"
+                v-if="positions.length > 0"
             />
-
             <!-- table -->
             <v-card
                 elevation="0"
                 color="white"
                 width="100%"
                 style="border-radius: 10px; margin-top: 20px"
+                v-if="!isLoading"
             >
                 <v-simple-table>
                     <template v-slot:default>
@@ -37,9 +38,6 @@
                                 <td>{{ item.department.name }}</td>
                                 <td>{{ item.name }}</td>
                                 <td style="width: 125px">
-                                    <v-btn icon style="border: 1px solid #AEAEAE" class="mr-1">
-                                        <v-icon size="25">mdi-pencil-outline</v-icon>
-                                    </v-btn>
                                     <v-btn icon style="border: 1px solid #AEAEAE" class="ml-1" @click="deletePos(item.id)">
                                         <v-icon size="25">mdi-delete-outline</v-icon>
                                     </v-btn>
@@ -64,7 +62,7 @@
                     <v-combobox
                         dense
                         outlined
-                        label="department"
+                        label="Bölümi"
                         v-model="position.department"
                         :items="departments"
                         item-text="name"
@@ -75,15 +73,24 @@
                         hide-details
                         dense
                         v-model="position.name"
-                        label="position"
+                        label="weizpesi"
                     />
                     <v-row no-gutters class="mt-3">
                         <v-spacer/>
-                        <v-btn elevation="0" color="#FF141D" dark @click="postData">Save</v-btn>
+                        <v-btn elevation="0" color="#0BB923" dark @click="postData">Ýatda sakla</v-btn>
                     </v-row>
                 </v-card>
             </v-dialog>
         </div>
+
+      <div style="width: 100%; height: 100%; display: flex; justify-content: center;align-items: center">
+        <v-img
+            v-if="positions.length === 0 && !isLoading"
+            src="@/assets/no-data.png"
+            style="position: absolute;width: 50%"
+        />
+      </div>
+      <loading-animation v-if="isLoading"/>
     </v-app>
 </template>
 
@@ -91,14 +98,16 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import NavButton from '@/components/example/NavButton.vue';
+import LoadingAnimation from "@/components/example/LoadingAnimation.vue";
 
 export default {
     data: () => ({
-        headers: ['ID', 'department', 'position', 'action'],
+        headers: ['ID', 'Bölümi', 'wezipesi', 'action'],
         positions: [],
         position: {},
         departments: [],
         dialog: false,
+        isLoading: true,
         Toast: Swal.mixin({
             toast: true,
             position: 'top-end',
@@ -120,6 +129,7 @@ export default {
             await axios.get('/position/')
             .then((res) => {
                 this.positions = res.data.data
+                this.isLoading = false
             })
             .catch((err) => {
                 console.log(err)
@@ -188,6 +198,7 @@ export default {
         }
     },
     components: {
+      LoadingAnimation,
         NavButton
     }
 }

@@ -1,11 +1,14 @@
 <template>
     <v-app style="background-color: #F2F2F7;">
-        <div style="margin: 20px">
+        <div style="margin: 20px"
+
+        >
             <v-card
                 elevation="0"
                 color="white"
                 width="100%"
                 style="border-radius: 10px; padding: 15px"
+                v-if="!isLoading"
             >
                 <v-row no-gutters>
                     <v-col cols="12" sm="2" md="2" xs="2">
@@ -16,7 +19,7 @@
                             :items="category"
                             item-text="name"
                             v-model="categoryModel"
-                            label="category"
+                            label="Kategoriýa"
                             @change="getItem()"
                             clearable
                             class="mr-1"
@@ -29,7 +32,7 @@
                             hide-details
                             :items="retrievedList"
                             v-model="retrievedModel"
-                            label="status"
+                            label="ýagdaýy"
                             @change="getItem()"
                             clearable
                             class="ml-1"
@@ -40,7 +43,7 @@
                         <v-text-field
                             outlined
                             dense
-                            label="search"
+                            label="Gözleg..."
                             placeholder="title, material_number, vendor"
                             hide-details
                             v-model="search"
@@ -56,6 +59,7 @@
                 color="white"
                 width="100%"
                 style="border-radius: 10px; margin-top: 20px"
+                v-if="items.length > 0"
             >
                 <v-simple-table>
                     <template v-slot:default>
@@ -73,7 +77,7 @@
                             <tr
                                 v-for="(item, i) in items"
                                 :key="i"
-                                :style="i % 2 == 0 ? 'background-color: #F2F2F7': ''"
+                                :style="i % 2 === 0 ? 'background-color: #F2F2F7': ''"
                                 class="table-row"
                             >
                                 <td @click="openDialog(item)">{{ item.id }}</td>
@@ -134,7 +138,7 @@
                     </v-row>
                 <!-- vendor quantity bin_location -->
                     <v-row no-gutters>
-                        <v-col cols="12" sm="4" md="4" xs="4">
+                        <v-col cols="12" sm="3" md="3" xs="3">
                             <v-text-field
                                 outlined
                                 dense
@@ -144,7 +148,7 @@
                                 class="mr-1"
                             />
                         </v-col>
-                        <v-col cols="12" sm="4" md="4" xs="4">
+                        <v-col cols="12" sm="3" md="3" xs="3">
                             <v-text-field
                                 outlined
                                 dense
@@ -154,12 +158,21 @@
                                 class="mx-1"
                             />
                         </v-col>
-                        <v-col cols="12" sm="4" md="4" xs="4">
+                        <v-col cols="12" sm="3" md="3" xs="3">
                             <v-text-field
                                 outlined
                                 dense
                                 label="bin_location"
                                 :value="item.bin_location"
+                                readonly
+                                class="mx-1"
+                            />
+                        </v-col><v-col cols="12" sm="3" md="3" xs="3">
+                            <v-text-field
+                                outlined
+                                dense
+                                label="price"
+                                :value="item.price"
                                 readonly
                                 class="ml-1"
                             />
@@ -212,6 +225,14 @@
             </v-dialog>
 
         </div>
+      <div style="width: 100%; height: 100%; display: flex; justify-content: center;align-items: center">
+        <v-img
+            v-if="items.length === 0 && !isLoading"
+            src="@/assets/no-data.png"
+            style="position: absolute;width: 50%"
+        />
+      </div>
+      <loading-animation v-if="isLoading"/>
     </v-app>
 </template>
 
@@ -219,17 +240,19 @@
 import BASE_URL from '@/utils/url';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import LoadingAnimation from "@/components/example/LoadingAnimation.vue";
 export default {
     data: () => ({
         search: null,
         dialog: false,
-        headers: ['id', 'category', 'title', 'quantity', 'bin_location', 'status', 'action'],
+        headers: ['id', 'Kategoriýasy', 'ady', 'sany', 'ýerleşýän ýeri', 'ýagdaýy', 'action'],
         category: [],
         categoryModel: null,
         retrievedList: ['old', 'new'],
         retrievedModel: null,
         items: [],
         item: {},
+        isLoading: true,
         url: BASE_URL,
         Toast: Swal.mixin({
             toast: true,
@@ -266,8 +289,8 @@ export default {
         async getItem() {
             console.log()
             let status = 
-                this.retrievedModel == 'old' ? true : 
-                this.retrievedModel == 'new' ? false : 
+                this.retrievedModel === 'old' ? true :
+                this.retrievedModel === 'new' ? false :
                 null
 
             const params = {
@@ -278,6 +301,7 @@ export default {
             await axios.get('/item/', { params: params })
             .then((res) => {
                 this.items = res.data.data
+                this.isLoading = false
             })
             .catch((err) => {
                 console.log(err)
@@ -286,12 +310,13 @@ export default {
 
         deleteItem(id) {
             Swal.fire({
-                title: 'Are you sure?',
+                title: 'Hakykatdanam pozmak isleýärsiňizmi?',
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#7FBA5E',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Hawa, pozmaly!',
+                cancelButtonText: 'Ýok!'
             })
             .then((res) => {
                 if(res.isConfirmed) {
@@ -299,7 +324,7 @@ export default {
                     .then(() => {
                         this.Toast.fire({
                             icon:'success',
-                            title: 'Successfully deleted'
+                            title: 'Üstünlikli pozuldy'
                         })
                         this.getItem()
                     })
@@ -307,13 +332,16 @@ export default {
                         console.log(err)
                         this.Toast.fire({
                             icon:'error',
-                            title: 'Something went wrong'
+                            title: 'Ýalňyşlyk ýüze çykdy!'
                         })
                     })
                 }
             })
         }
-    }
+    },
+  components: {
+      LoadingAnimation
+  }
 }
 </script>
 

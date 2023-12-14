@@ -22,10 +22,11 @@
             <v-spacer/>
             <v-btn
                 elevation="0"
-                style="color: #FF141D; border: 1px solid #FF141D; background-color: transparent"
+                style="color: #0BB923; border: 1px solid #0BB923; background-color: transparent"
                 @click="$emit('open-dialog')"
+                tile
             >
-                <v-icon color="#FF141D"> {{ icon }} </v-icon>
+                <v-icon color="#0BB923"> {{ icon }} </v-icon>
                 +
             </v-btn>
         </v-row>

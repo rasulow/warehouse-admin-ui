@@ -20,6 +20,7 @@ export default new Vuetify({
         }
     },
     color: {
-        main: '#7FBA5E'
+        main: '#7FBA5E',
+        secondary: '#0BB923'
     }
 });

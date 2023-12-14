@@ -1,6 +1,9 @@
 <template>
     <v-app style="background-color: #F2F2F7;">
-        <div style="margin: 20px">
+
+        <div style="margin: 20px"
+
+        >
             <v-card
                 elevation="0"
                 color="white"
@@ -22,13 +25,14 @@
                     </v-col>
                 </v-row>
             </v-card>
-            
+
             <!-- table -->
             <v-card
                 elevation="0"
                 color="white"
                 width="100%"
                 style="border-radius: 10px; margin-top: 20px"
+                v-if="!isLoading & requests.length > 0"
             >
                 <v-simple-table>
                     <template v-slot:default>
@@ -69,9 +73,9 @@
                                                 : item.response?.status == 1 ? 'answered'
                                                 : item.response?.status == 0 ? 'rejected': 'waiting' }}
                                         </div>
-                                        <v-icon 
-                                            color="green" 
-                                            v-if="item.response?.status == 1" 
+                                        <v-icon
+                                            color="green"
+                                            v-if="item.response?.status == 1"
                                             class="ml-1"
                                             @click="postCompleted(item.response.id)"
                                         >
@@ -90,7 +94,7 @@
                 transition="dialog-bottom-transition"
                 max-width="50%"
             >
-                <v-card 
+                <v-card
                     elevation="0"
                     class="pa-6"
                 >
@@ -203,15 +207,15 @@
                             />
                         </v-col>
                         <v-col cols="12" md="2" sm="2" xs="2">
-                            
+
                             <v-text-field
                                 v-if="request.response != null"
                                 outlined
                                 dense
                                 label="status"
                                 :value="
-                                    request.response?.status == 2 ? 'completed' 
-                                    : request.response?.status == 1 ? 'not completed' 
+                                    request.response?.status == 2 ? 'completed'
+                                    : request.response?.status == 1 ? 'not completed'
                                     : request.response?.status == 0 ? 'rejected'
                                     : ''"
                                 readonly
@@ -235,9 +239,9 @@
 
                     <v-row no-gutters class="mt-5">
                         <v-spacer/>
-                        <v-btn 
-                            elevation="0" 
-                            color="#FF141D" 
+                        <v-btn
+                            elevation="0"
+                            color="#0BB923"
                             :disabled="request.response != null"
                             :style="!request.response ? 'color: white' : ''"
                             @click="postResponse(request.id)"
@@ -248,6 +252,14 @@
                 </v-card>
             </v-dialog>
         </div>
+      <div style="width: 100%; height: 100%; display: flex; justify-content: center;align-items: center">
+        <v-img
+            v-if="requests.length === 0 && !isLoading"
+            src="@/assets/no-data.png"
+            style="position: absolute;width: 50%"
+        />
+      </div>
+      <loading-animation v-if="isLoading"/>
     </v-app>
 </template>
     
@@ -256,7 +268,9 @@
 import axios from 'axios';
 import BASE_URL from '@/utils/url';
 import Swal from 'sweetalert2';
+import LoadingAnimation from "@/components/example/LoadingAnimation.vue";
 export default {
+  components: {LoadingAnimation},
     data: () => ({
         headers: ['id', 'item', 'count_in_stock', 'req_quantity', 'req_date', 'status'],
         status: ['answered', 'waiting'],
@@ -267,6 +281,7 @@ export default {
         requests: [],
         request: {},
         dialog: false,
+        isLoading: true,
         url: BASE_URL,
         Toast: Swal.mixin({
             toast: true,
@@ -292,7 +307,7 @@ export default {
             await axios.get('/request/', { params: params })
             .then((res) => {
                 this.requests = res.data.data
-                console.log(this.requests)
+                this.isLoading = false
             })
             .catch((err) => {
                 console.log(err)

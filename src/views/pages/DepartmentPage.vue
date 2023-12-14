@@ -1,17 +1,19 @@
 <template>
     <v-app style="background-color: #F2F2F7;">
-        <div style="margin: 20px;">
+
+        <div style="margin: 20px;"
+          v-if="departments.length > 0"
+        >
             <nav-button
                 icon="mdi-alpha-d-box-outline"
                 @open-dialog="dialog = !dialog"
             />
-            
-            <!-- table -->
             <v-card
                 elevation="0"
                 color="white"
                 width="100%"
                 style="border-radius: 10px; margin-top: 20px"
+                v-if="!isLoading"
             >
                 <v-simple-table>
                     <template v-slot:default>
@@ -36,9 +38,6 @@
                                 <td>{{ item.id }}</td>
                                 <td>{{ item.name }}</td>
                                 <td style="width: 125px">
-                                    <v-btn icon style="border: 1px solid #AEAEAE" class="mr-1">
-                                        <v-icon size="25">mdi-pencil-outline</v-icon>
-                                    </v-btn>
                                     <v-btn icon style="border: 1px solid #AEAEAE" class="ml-1" @click="deleteDep(item.id)">
                                         <v-icon size="25">mdi-delete-outline</v-icon>
                                     </v-btn>
@@ -47,15 +46,14 @@
                         </tbody>
                     </template>
                 </v-simple-table>
-            </v-card> 
+            </v-card>
 
-            <!-- dialog -->
             <v-dialog
                 v-model="dialog"
                 transition="dialog-bottom-transition"
                 max-width="20%"
             >
-                <v-card 
+                <v-card
                     elevation="0"
                     class="pa-6"
                 >
@@ -68,12 +66,20 @@
                     />
                     <v-row no-gutters class="mt-3">
                         <v-spacer/>
-                        <v-btn elevation="0" color="#FF141D" dark @click="postData">Save</v-btn>
+                        <v-btn elevation="0" color="#0BB923" dark @click="postData">Save</v-btn>
                     </v-row>
                 </v-card>
             </v-dialog>
 
         </div>
+      <div style="width: 100%; height: 100%; display: flex; justify-content: center;align-items: center">
+        <v-img
+            v-if="departments.length === 0 && !isLoading"
+            src="@/assets/no-data.png"
+            style="position: absolute;width: 50%"
+        />
+      </div>
+      <loading-animation v-if="isLoading"/>
     </v-app>
 </template>
 
@@ -81,13 +87,15 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import NavButton from '@/components/example/NavButton.vue';
+import LoadingAnimation from "@/components/example/LoadingAnimation.vue";
 
 export default {
     data: () => ({
-        headers: ['ID', 'department', 'action'],
+        headers: ['ID', 'bölümi', 'action'],
         departments: [],
         department: {},
         dialog: false,
+        isLoading: true,
         Toast: Swal.mixin({
             toast: true,
             position: 'top-end',
@@ -108,6 +116,7 @@ export default {
             await axios.get('/department/')
             .then((res) => {
                 this.departments = res.data.data
+                this.isLoading = false
             })
             .catch((err) => {
                 console.log(err)
@@ -165,7 +174,8 @@ export default {
         }
     },
     components: {
-        NavButton
+        NavButton,
+      LoadingAnimation
     }
 }
 </script>
